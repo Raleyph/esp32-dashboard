@@ -1,0 +1,27 @@
+# IDE
+.idea/
+.vscode/
+
+# PlatformIO
+.pio/
+
+# Build
+build/
+
+# ESP-IDF
+sdkconfig
+sdkconfig.old
+sdkconfig.esp32-c6-dev
+sdkconfig.seeed_xiao_esp32c6
+
+managed_components/
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+compile_commands.json
+
+# Ninja
+.ninja_deps
+.ninja_log

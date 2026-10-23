@@ -1,0 +1,90 @@
+:root {
+    --black: #000;
+    --white: #FFF;
+
+    --background: #0F0F11;
+    --dark-neutral: #18181B;
+    --dark-light: #27272A;
+    --border-gray: #3F3F46;
+
+    --secondary-text: #A1A1AA;
+    --secondary-text-back: rgb(161 161 170 / 0.15);
+
+    --info: #60A5FA;
+    --info-back: rgb(96 165 250 / 0.15);
+
+    --success: #10B981;
+    --success-back: rgb(16 185 129 / 0.15);
+
+    --pending: #F59E0B;
+    --pending-back: rgb(245 158 11 / 0.15);
+
+    --error: #EF4444;
+    --error-back: rgb(239 68 68 / 0.15);
+
+    --bar-ram-color: #3B82F6;
+    --bar-primary-color: #0d9488;
+    --bar-secondary-color: #64748b;
+    --bar-tertiary-color: #D97706;
+
+    --primary-button-background: #FFF;
+    --primaty-button-text: #000;
+
+    --neutral-button-background: #24272D;
+    --neutral-button-text: #E4E6EB;
+
+    --green-button-background: rgb(16 185 129 / 0.15);
+    --green-button-text: #10B981;
+
+    --red-button-background: rgb(239 68 68 / 0.15);
+    --red-button-text: #EF4444;
+
+
+    --plate-border-radius: 25px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", sans-serif;
+}
+
+body {
+    padding-top: 50px;
+    padding-bottom: 30px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    background-color: var(--background);
+}
+
+.content {
+    padding: 0 20px;
+
+    width: min(100% - 32px, 520px);
+
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+}
+
+.buttons-bundle {
+    display: flex;
+    align-content: space-between;
+    gap: 10px;
+}
+
+.basement {
+    display: flex;
+    justify-content: center;
+}

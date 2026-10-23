@@ -1,0 +1,376 @@
+/* Common */
+
+p {
+    color: var(--white);
+}
+
+.title {
+    font-weight: bold;
+    font-size: 26px;
+}
+
+.subtitle {
+    color: var(--secondary-text);
+}
+
+.subtitle-small {
+    font-size: 12px;
+    color: var(--secondary-text);
+}
+
+.value-bold {
+    font-weight: bold;
+    font-size: 22px;
+}
+
+/* Color Modifiers */
+
+.neutral {
+    color: var(--secondary-text) !important;
+}
+
+.neutral-plate {
+    padding: 0 8px;
+
+    border-radius: var(--plate-border-radius);
+
+    color: var(--secondary-text);
+    background-color: var(--secondary-text-back);
+}
+
+.info {
+    color: var(--info) !important;
+}
+
+.info-plate {
+    padding: 0 8px;
+
+    border-radius: var(--plate-border-radius);
+
+    color: var(--info);
+    background-color: var(--info-back);
+}
+
+.success {
+    color: var(--success) !important;
+}
+
+.success-plate {
+    padding: 0 8px;
+
+    border-radius: var(--plate-border-radius);
+
+    color: var(--success);
+    background-color: var(--success-back);
+}
+
+.pending {
+    color: var(--pending) !important;
+}
+
+.pending-plate {
+    padding: 0 8px;
+
+    border-radius: var(--plate-border-radius);
+
+    color: var(--pending);
+    background-color: var(--pending-back);
+}
+
+.error {
+    color: var(--error) !important;
+}
+
+.error-plate {
+    padding: 0 8px;
+
+    border-radius: var(--plate-border-radius);
+
+    color: var(--error);
+    background-color: var(--error-back);
+}
+
+/* Split */
+
+.split {
+    width: 100%;
+    height: 1px;
+    background-color: var(--dark-neutral);
+}
+
+/* Input */
+
+.string-input {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+input {
+    height: 40px;
+
+    padding: 0 15px;
+
+    border: solid 1px var(--border-gray);
+    border-radius: var(--plate-border-radius);
+
+    color: var(--white);
+    background-color: transparent;
+}
+
+input:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+}
+
+/* Primary button */
+
+.primary-button {
+    width: 100%;
+    height: 40px;
+
+    border: none;
+    border-radius: var(--plate-border-radius);
+
+    cursor: pointer;
+}
+
+.primary-button.default {
+    color: var(--primaty-button-text);
+    background-color: var(--primary-button-background);
+}
+
+.primary-button.neutral {
+    color: var(--neutral-button-text);
+    background-color: var(--neutral-button-background);
+}
+
+.primary-button.green {
+    color: var(--green-button-text);
+    background-color: var(--green-button-background);
+}
+
+.primary-button.red {
+    color: var(--red-button-text);
+    background-color: var(--red-button-background);
+}
+
+.primary-button:disabled {
+    color: rgba(255, 255, 255, 0.4);
+    background-color: rgba(255, 255, 255, 0.15);
+
+    cursor: default;
+}
+
+/* Tab Button */
+
+.tab-button {
+    height: 30px;
+
+    padding: 0 15px;
+
+    border: solid 1px var(--border-gray);
+    border-radius: var(--plate-border-radius);
+
+    color: var(--white);
+    background-color: transparent;
+
+    cursor: pointer;
+}
+
+.tab-button.active {
+    height: 30px;
+
+    padding: 0 15px;
+
+    border: none;
+    border-radius: var(--plate-border-radius);
+
+    color: var(--black);
+    background-color: var(--white);
+
+    cursor: pointer;
+}
+
+/* Chart */
+
+.chart {
+    box-sizing: border-box;
+    padding: 25px 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    border-radius: var(--plate-border-radius);
+
+    background-color: var(--dark-neutral);
+
+    p {
+        position: absolute;
+    }
+}
+
+.chart__container {
+    width: 100%;
+    height: 250px;
+}
+
+.chart__container canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.memory-chart__legend {
+    display: flex;
+    gap: 20px;
+    font-size: 12px;
+    color: #a1a1aa;
+}
+
+.memory-chart__legend span {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.memory-chart__legend span::before {
+    content: "";
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+}
+
+.legend-free::before {
+    background: var(--bar-primary-color);
+}
+
+.legend-min::before {
+    background: var(--bar-secondary-color);
+}
+
+.legend-largest::before {
+    background: var(--bar-tertiary-color);
+}
+
+.memory-chart canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+@media (max-width: 600px) {
+    .memory-chart {
+        padding: 14px;
+    }
+
+    .memory-chart__canvas {
+        height: 190px;
+    }
+}
+
+/* Log Container */
+
+.log-container {
+    height: 400px;
+
+    padding: 5px 0;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: auto;
+}
+
+.log-text {
+    display: grid;
+    grid-template-columns: 65px 18px 55px minmax(0, 1fr);
+    align-items: baseline;
+
+    font-size: 12px;
+
+    span {
+        font-family: monospace;
+        min-width: 0;
+    }
+}
+
+/* Bar */
+
+.bar {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.bar__background {
+    height: 10px;
+
+    border-radius: var(--plate-border-radius);
+
+    overflow: hidden;
+
+    background-color: var(--dark-light);
+}
+
+.bar__value {
+    height: 100%;
+    width: 0;
+}
+
+.bar__status {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.bar__status-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+}
+
+.ram-bar {
+    background-color: var(--bar-ram-color);
+}
+
+.primary-bar {
+    background-color: var(--bar-primary-color);
+}
+
+.secondary-bar {
+    background-color: var(--bar-secondary-color);
+}
+
+.tertiary-bar {
+    background-color: var(--bar-tertiary-color);
+}
+
+/* Metadata Table */
+
+.metadata {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.metadata-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+/* Metadata Grid */
+
+.metadata-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-row-gap: 20px;
+}
+
+.metadata-grid__element {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}

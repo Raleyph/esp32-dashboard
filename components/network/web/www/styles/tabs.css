@@ -1,0 +1,40 @@
+.tabs-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tab-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+.tab {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.tab-plate {
+    padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    border: solid 1px var(--border-gray);
+    border-radius: var(--plate-border-radius);
+}
+
+.plate-title {
+    font-weight: bold;
+}

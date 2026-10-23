@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <title id="device-name-title">Untitled device</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/ui.css">
+    <link rel="stylesheet" href="styles/tabs.css">
+
+    <script src="scripts/tabs.js" defer></script>
+    <script type="module" src="scripts/fetch.js" defer></script>
+</head>
+<body>
+    <div class="content">
+        <div class="header">
+            <div class="bar__status-row">
+                <p id="device-name" class="value-bold">Untitled device</p>
+                <p id="connection-status" class="success-plate">Online</p>
+            </div>
+
+            <div class="bar__status-row">
+                <p class="subtitle">Firmware <span id="firmware-version">N/A</span></p>
+                <p id="device-ip" class="subtitle">N/A</p>
+            </div>
+        </div>
+
+        <div class="tab-wrapper">
+            <div class="tabs-header" id="tabsHeader">
+                <button class="tab-button active" data-tab="tab-1">System</button>
+                <button class="tab-button" data-tab="tab-2">Output log</button>
+                <button class="tab-button" data-tab="tab-3">OTA & Network</button>
+                <button class="tab-button" data-tab="tab-4">MQTT</button>
+            </div>
+
+            <div class="tab-pane active" id="tab-1">
+                <div class="tab">
+                    <div class="tab-plate">
+                        <p class="plate-title">Summary</p>
+
+                        <div class="metadata-grid">
+                            <div class="metadata-grid__element">
+                                <p class="subtitle-small">Uptime</p>
+                                <p id="uptime" class="value-bold">-</p>
+                                <p id="system-status" class="subtitle-small neutral">No data</p>
+                            </div>
+
+                            <div class="metadata-grid__element">
+                                <p class="subtitle-small">Wi-Fi Signal</p>
+                                <p id="signal-dbm" class="value-bold">-</p>
+                                <p id="rssi-status" class="subtitle-small neutral">No data</p>
+                            </div>
+
+                            <div class="metadata-grid__element">
+                                <p class="subtitle-small">Chip Temp.</p>
+                                <p id="chip-temperature" class="value-bold">-</p>
+                                <p id="temperature-status" class="subtitle-small neutral">No data</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-plate">
+                        <p class="plate-title">Memory</p>
+
+                        <div class="bar">
+                            <div class="bar__status">
+                                <div class="bar__status-row">
+                                    <p class="value-bold">Heap Usage</p>
+                                    <p id="ram-capacity">- / - KiB</p>
+                                </div>
+                            </div>
+
+                            <div class="bar__background">
+                                <div id="ram-bar-value" class="bar__value ram-bar"></div>
+                            </div>
+
+                            <p id="ram-percentage" class="subtitle-small">No available data</p>
+                        </div>
+
+                        <div class="split"></div>
+
+                        <div class="metadata-grid">
+                            <div class="metadata-grid__element">
+                                <p class="subtitle-small">Free heap</p>
+                                <p id="ram-free-heap" class="value-bold">-</p>
+                            </div>
+
+                            <div class="metadata-grid__element">
+                                <p class="subtitle-small">Minimum free heap</p>
+                                <p id="ram-min-free-heap" class="value-bold">-</p>
+                            </div>
+
+                            <div class="metadata-grid__element">
+                                <p class="subtitle-small">Largest free block</p>
+                                <p id="ram-largest-free-block" class="value-bold">-</p>
+                            </div>
+                        </div>
+
+                        <div class="chart">
+                            <div class="chart__container">
+                                <canvas id="heap-chart"></canvas>
+                            </div>
+
+                            <div class="memory-chart__legend">
+                                <span class="legend-free">Free Heap</span>
+                                <span class="legend-min">Minimum Free</span>
+                                <span class="legend-largest">Largest Free Block</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-plate">
+                        <p class="plate-title">Flash & Partitions</p>
+
+                        <div class="bar">
+                            <div class="bar__status">
+                                <div class="bar__status-row">
+                                    <p id="ota0-label" class="subtitle">ota_0</p>
+                                    <p id="ota0-state" class="neutral-plate">UNKNOWN</p>
+                                </div>
+
+                                <div class="bar__status-row">
+                                    <p id="ota0-firmware-version" class="value-bold">N/A</p>
+                                    <p id="ota0-capacity">- / - MiB</p>
+                                </div>
+                            </div>
+
+                            <div class="bar__background">
+                                <div id="ota0-bar-value" class="bar__value primary-bar"></div>
+                            </div>
+
+                            <p id="ota0-percentage" class="subtitle-small">No available data</p>
+                        </div>
+
+                        <div class="bar">
+                            <div class="bar__status">
+                                <div class="bar__status-row">
+                                    <p id="ota1-label" class="subtitle">ota_1</p>
+                                    <p id="ota1-state" class="neutral-plate">UNKNOWN</p>
+                                </div>
+
+                                <div class="bar__status-row">
+                                    <p id="ota1-firmware-version" class="value-bold">N/A</p>
+                                    <p id="ota1-capacity">- / - MiB</p>
+                                </div>
+                            </div>
+
+                            <div class="bar__background">
+                                <div id="ota1-bar-value" class="bar__value secondary-bar"></div>
+                            </div>
+
+                            <p id="ota1-percentage" class="subtitle-small">No available data</p>
+                        </div>
+
+                        <div class="split"></div>
+
+                        <div class="metadata">
+                            <div class="metadata-row">
+                                <p class="subtitle">Running partition</p>
+                                <p id="running-partition">N/A</p>
+                            </div>
+
+                            <div class="metadata-row">
+                                <p class="subtitle">Boot partition</p>
+                                <p id="boot-partition">N/A</p>
+                            </div>
+
+                            <div class="metadata-row">
+                                <p class="subtitle">Next OTA partition</p>
+                                <p id="next-ota-partition">N/A</p>
+                            </div>
+
+                            <div class="metadata-row">
+                                <p class="subtitle">Rollback</p>
+                                <p id="rollback-enabled">N/A</p>
+                            </div>
+                        </div>
+
+                        <div class="split"></div>
+
+                        <div class="metadata">
+                            <div class="metadata-row">
+                                <p class="subtitle">Total flash size</p>
+                                <p id="total-flash-size">N/A</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-plate">
+                        <p class="plate-title">Security</p>
+
+                        <div class="metadata">
+                            <div class="metadata-row">
+                                <p class="subtitle">JTAG</p>
+                                <p id="jtag-disabled">N/A</p>
+                            </div>
+
+                            <div class="metadata-row">
+                                <p class="subtitle">Flash encryption</p>
+                                <p id="flash-encryption">N/A</p>
+                            </div>
+
+                            <div class="metadata-row">
+                                <p class="subtitle">NVS encryption</p>
+                                <p id="nvs-encryption">N/A</p>
+                            </div>
+
+                            <div class="metadata-row">
+                                <p class="subtitle">Secure boot</p>
+                                <p id="secure-boot">N/A</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-plate">
+                        <p class="plate-title">Hardware</p>
+
+                        <div class="metadata">
+                            <div class="metadata-row">
+                                <p class="subtitle">Chip</p>
+                                <p id="chip-name">N/A</p>
+                            </div>
+
+                            <div class="metadata-row">
+                                <p class="subtitle">CPU cores</p>
+                                <p id="cpu-cores">N/A</p>
+                            </div>
+
+                            <div class="metadata-row">
+                                <p class="subtitle">IDF version</p>
+                                <p id="idf-version">N/A</p>
+                            </div>
+
+                            <div class="metadata-row">
+                                <p class="subtitle">MAC address</p>
+                                <p id="mac-address">N/A</p>
+                            </div>
+
+                            <div class="metadata-row">
+                                <p class="subtitle">Reset reason</p>
+                                <p id="reset-reason">N/A</p>
+                            </div>
+                        </div>
+
+                        <button class="primary-button">Restart device</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane" id="tab-2">
+                <div class="tab">
+                    <div class="tab-plate">
+                        <div class="bar__status-row">
+                            <p class="plate-title">Output log</p>
+                            <p id="logs-status" class="neutral-plate">No data</p>
+                        </div>
+
+                        <div id="logs" class="log-container"></div>
+
+                        <div class="buttons-bundle">
+                            <button id="pause-logs" class="primary-button neutral">Pause</button>
+                            <button id="download-logs" class="primary-button green">Download</button>
+                            <button id="clear-logs" class="primary-button red">Clear</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane" id="tab-3">
+                <div class="tab">
+                    <div class="tab-plate">
+                        <p class="plate-title">OTA</p>
+
+                        <div class="string-input">
+                            <p class="subtitle">Firmware URL (S3, local storage, etc.)</p>
+                            <input placeholder="https://example.s3.eu-central-1.amazonaws.com/firmware.bin?X-...">
+                        </div>
+
+                        <button disabled class="primary-button default">Check firmware</button>
+                    </div>
+
+                    <div class="tab-plate">
+                        <p class="plate-title">Network</p>
+
+                        <div class="string-input">
+                            <p class="subtitle">Wi-Fi SSID</p>
+                            <input class="string-input" placeholder="MikroTik hAP">
+                        </div>
+
+                        <div class="string-input">
+                            <p class="subtitle">Password</p>
+                            <input type="password" placeholder="••••••••••••••••">
+                        </div>
+
+                        <button disabled class="primary-button default">Update Wi-Fi configuration</button>
+                        <button class="primary-button neutral">Show current configuration</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane" id="tab-4">
+                <div class="tab">
+                    <div class="tab-plate">
+                        <p class="plate-title">MQTT credentials</p>
+
+                        <div class="string-input">
+                            <p class="subtitle">Broker URI</p>
+                            <input class="string-input" placeholder="mqtt://192.168.0.197:1883">
+                        </div>
+
+                        <div class="string-input">
+                            <p class="subtitle">Username</p>
+                            <input class="string-input" placeholder="esp32">
+                        </div>
+
+                        <div class="string-input">
+                            <p class="subtitle">Password</p>
+                            <input type="password" placeholder="••••••••••••••••">
+                        </div>
+
+                        <button disabled class="primary-button default">Update MQTT configuration</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="basement">
+            <p class="subtitle">Copyright © 2026 Raleyph. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>
