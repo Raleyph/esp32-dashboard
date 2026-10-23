@@ -1,19 +1,47 @@
+// Copyright (c) 2026 Raleyph. All rights reserved.
+
 import * as dom from "./dom.js";
 import * as formatters from "./formatters.js";
 
-function updateHeader(data) {
-    dom.setText("firmware-version", data.firmwareVersion);
-    dom.setText("device-ip", data.ip);
-}
+const uptimeDom = document.getElementById("uptime");
+const systemStatusDom = document.getElementById("system-status");
+
+const wifiRssiDom = document.getElementById("signal-dbm");
+const wifiRssiStatusDom = document.getElementById("rssi-status");
+
+const chipTemperatureDom = document.getElementById("chip-temperature");
+const chipTemperatureStatusDom = document.getElementById("chip-temperature-status");
+
+const ramPercentageDom = document.getElementById("ram-percentage");
+const ramBarValue = document.getElementById("ram-bar-value");
+const ramCapacity = document.getElementById("ram-capacity");
+
+const ramFreeHeapDom = document.getElementById("ram-free-heap");
+const ramMinFreeHeapDom = document.getElementById("ram-min-free-heap");
+const ramLargestFreeBlockDom = document.getElementById("ram-largest-free-block");
+
+const chipTemperatureRanges = [
+    { max: 65,  text: "Good",     style: "success" },
+    { max: 80,  text: "Elevated", style: "pending" },
+    { max: 100, text: "High",     style: "error" }
+];
+
+const wifiRssiRanges = [
+    { max: 50, text: "Excellent", style: "success" },
+    { max: 60, text: "Good",      style: "success" },
+    { max: 70, text: "Fair",      style: "info" },
+    { max: 80, text: "Weak",      style: "pending" },
+    { max: 90, text: "Poor",      style: "error" },
+];
 
 function updatePartitionBars(data) {
     const partitions = data.partitions;
 
     // OTA0
 
-    dom.setText("ota0-label", partitions.ota_0.label);
-    dom.setText("ota0-state", partitions.ota_0.state, true);
-    dom.setText("ota0-firmware-version", partitions.ota_0.firmwareVersion);
+    dom.setTextValue("ota0-label", partitions.ota_0.label);
+    dom.setTextValue("ota0-state", partitions.ota_0.state, true);
+    dom.setTextValue("ota0-firmware-version", partitions.ota_0.firmwareVersion);
 
     document.getElementById("ota0-percentage").textContent = formatters.getPercentageString(
         partitions.ota_0.firmwareSize,
@@ -34,9 +62,9 @@ function updatePartitionBars(data) {
 
     // OTA1
 
-    dom.setText("ota1-label", partitions.ota_1.label);
-    dom.setText("ota1-state", partitions.ota_1.state, true);
-    dom.setText("ota1-firmware-version", partitions.ota_1.firmwareVersion);
+    dom.setTextValue("ota1-label", partitions.ota_1.label);
+    dom.setTextValue("ota1-state", partitions.ota_1.state, true);
+    dom.setTextValue("ota1-firmware-version", partitions.ota_1.firmwareVersion);
 
     document.getElementById("ota1-percentage").textContent = formatters.getPercentageString(
         partitions.ota_1.firmwareSize,
@@ -56,152 +84,93 @@ function updatePartitionBars(data) {
     );
 }
 
-function updateFlashInfo(data) {
-    document.getElementById("running-partition").textContent = data.runningPartition;
-    document.getElementById("boot-partition").textContent = data.bootPartition;
-    document.getElementById("next-ota-partition").textContent = data.nextOtaPartition;
-
-    dom.setText("rollback-enabled", data.isRollbackEnabled, true);
-
-    document.getElementById("total-flash-size").textContent = `${formatters.bytesToMbStr(data.totalFlashSize)} MB`;
-}
-
-function updateSecurityInfo(data) {
-    dom.setText("flash-encryption", data.isFlashEncrypted, true);
-    dom.setText("secure-boot", data.isSecureBootEnabled, true);
-    dom.setText("jtag-disabled", !data.isJtagDisabled, true);
-    dom.setText("nvs-encryption", data.isNvsEncrypted, true);
-}
-
-function updateDeviceInfo(data) {
-    document.getElementById("chip-name").textContent = data.chipName.toLocaleUpperCase();
-    document.getElementById("cpu-cores").textContent = data.cpuCores;
-
-    document.getElementById("idf-version").textContent = data.idfVersion;
-    document.getElementById("mac-address").textContent = data.mac;
-
-    document.getElementById("reset-reason").textContent = data.resetReason;
-}
-
-function updateStatusBarStyle(element, style) {
+function updateStatus(element, text, style) {
+    element.textContent = text;
     element.className = `subtitle-small ${style}`;
 }
 
-function updateSystemStatus(uptime) {
-    const element = document.getElementById("system-status");
-
-    if (!uptime) {
-        element.textContent = "No data";
-        updateStatusBarStyle(element, "neutral");
-        return;
+function getSystemStatus(uptime) {
+    if (uptime === null) {
+        return { text: "No data", style: "neutral" };
     }
 
-    element.textContent = "System active";
-    updateStatusBarStyle(element, "success");
+    return { text: "System active", style: "success" };
 }
 
-function updateNetworkStatus(rssi) {
-    const element = document.getElementById("rssi-status");
-
-    if (!rssi) {
-        element.textContent = "No data";
-        updateStatusBarStyle(element, "neutral");
-        return;
+function getStatus(value, ranges, defaultCritical = { text: "Critical", style: "error" }) {
+    if (value === null || value === undefined || Number.isNaN(value)) {
+        return { text: "No data", style: "neutral" };
     }
 
-    let text;
+    const found = ranges.find(range => value <= range.max);
 
-    if (rssi >= -50) {
-        text = "Excellent";
-        updateStatusBarStyle(element, "success");
-    } else if (rssi >= -60) {
-        text = "Good";
-        updateStatusBarStyle(element, "success");
-    } else if (rssi >= -70) {
-        text = "Fair";
-        updateStatusBarStyle(element, "info");
-    } else if (rssi >= -80) {
-        text = "Weak";
-        updateStatusBarStyle(element, "pending");
-    } else if (rssi >= -90) {
-        text = "Poor";
-        updateStatusBarStyle(element, "error");
-    } else {
-        text = "Critical";
-        updateStatusBarStyle(element, "error");
-    }
-
-    element.textContent = text;
-}
-
-function updateTemperatureStatus(temperature) {
-    const element = document.getElementById("temperature-status");
-
-    if (!temperature) {
-        element.textContent = "No data";
-        updateStatusBarStyle(element, "neutral");
-        return;
-    }
-
-    let text;
-
-    if (temperature <= 65) {
-        text = "Good";
-        updateStatusBarStyle(element, "success");
-    } else if (temperature > 65 && temperature <= 80) {
-        text = "Elevated";
-        updateStatusBarStyle(element, "pending");
-    } else if (temperature > 85 && temperature < 100) {
-        text = "High";
-        updateStatusBarStyle(element, "error");
-    } else {
-        text = "Critical";
-        updateStatusBarStyle(element, "error");
-    }
-
-    element.textContent = text;
+    return found ? { text: found.text, style: found.style } : defaultCritical;
 }
 
 export function setConnectionStatus(status) {
-    dom.setText("connection-status", status ? "Online" : "Offline", true);
+    dom.setTextValue("connection-status", status ? "Online" : "Offline", true);
 }
 
 export function updateStaticMetrics(data) {
-    updateHeader(data);
+    // Header
+    dom.setTextValue("firmware-version", data.firmwareVersion);
+    dom.setTextValue("device-ip", data.ip);
+
+    // Partitions
     updatePartitionBars(data);
-    updateFlashInfo(data);
-    updateSecurityInfo(data);
-    updateDeviceInfo(data);
+
+    // Flash
+    document.getElementById("running-partition").textContent = data.runningPartition;
+    document.getElementById("boot-partition").textContent = data.bootPartition;
+    document.getElementById("next-ota-partition").textContent = data.nextOtaPartition;
+    document.getElementById("total-flash-size").textContent = `${formatters.bytesToMbStr(data.totalFlashSize)} MB`;
+    dom.setTextValue("rollback-enabled", data.isRollbackEnabled, true);
+
+    // Security
+    dom.setTextValue("flash-encryption", data.isFlashEncrypted, true);
+    dom.setTextValue("secure-boot", data.isSecureBootEnabled, true);
+    dom.setTextValue("jtag-disabled", !data.isJtagDisabled, true);
+    dom.setTextValue("nvs-encryption", data.isNvsEncrypted, true);
+
+    // Hardware
+    document.getElementById("chip-name").textContent = data.chipName.toLocaleUpperCase();
+    document.getElementById("cpu-cores").textContent = data.cpuCores;
+    document.getElementById("idf-version").textContent = data.idfVersion;
+    document.getElementById("mac-address").textContent = data.mac;
+    document.getElementById("reset-reason").textContent = data.resetReason;
 }
 
 export function updateDynamicMetrics(data) {
-    document.getElementById("uptime").textContent = formatters.formatSecondsToDDHHMMSS(data.uptime);
-    updateSystemStatus(data.uptime);
+    uptimeDom.textContent = formatters.formatSecondsToDDHHMMSS(data.uptime);
+    const systemStatus = getSystemStatus(data.uptime);
+    updateStatus(systemStatusDom, systemStatus.text, systemStatus.style);
 
-    document.getElementById("signal-dbm").textContent = `${data.wifiRssi} dBm`;
-    updateNetworkStatus(data.wifiRssi);
+    wifiRssiDom.textContent = `${data.wifiRssi} dBm`;
+    const wifiRssiStatus = getStatus(data.wifiRssi * -1, wifiRssiRanges)
+    updateStatus(wifiRssiStatusDom, wifiRssiStatus.text, wifiRssiStatus.style);
 
-    document.getElementById("chip-temperature").textContent = data.chipTemperature ? `${data.chipTemperature} °C` : "-";
-    updateTemperatureStatus(data.chipTemperature);
+    chipTemperatureDom.textContent = data.chipTemperature ? `${data.chipTemperature} °C` : "-";
+    const chipTemperatureStatus = getStatus(data.chipTemperature, chipTemperatureRanges);
+    updateStatus(chipTemperatureStatusDom, chipTemperatureStatus.text, chipTemperatureStatus.style);
 
-    document.getElementById("ram-percentage").textContent = formatters.getPercentageString(
+    ramPercentageDom.textContent = formatters.getPercentageString(
         data.usedHeap,
         data.totalHeap,
         "available heap"
     );
 
-    document.getElementById("ram-bar-value").style.width = `${formatters.getPercentage(
+    ramBarValue.style.width = `${formatters.getPercentage(
         data.usedHeap,
         data.totalHeap
     )}%`;
 
-    document.getElementById("ram-capacity").textContent = formatters.getBarCapacity(
+    ramCapacity.textContent = formatters.getBarCapacity(
         formatters.bytesToKibStr(data.usedHeap),
         formatters.bytesToKibStr(data.totalHeap),
         "KiB"
     );
 
-    document.getElementById("ram-free-heap").textContent = `${formatters.bytesToKibStr(data.freeHeap)} KiB`;
-    document.getElementById("ram-min-free-heap").textContent = `${formatters.bytesToKibStr(data.minimumFreeHeap)} KiB`;
-    document.getElementById("ram-largest-free-block").textContent = `${formatters.bytesToKibStr(data.largestFreeBlock)} KiB`;
+    ramFreeHeapDom.textContent = `${formatters.bytesToKibStr(data.freeHeap)} KiB`;
+    ramMinFreeHeapDom.textContent = `${formatters.bytesToKibStr(data.minimumFreeHeap)} KiB`;
+    ramLargestFreeBlockDom.textContent = `${formatters.bytesToKibStr(data.largestFreeBlock)} KiB`;
 }

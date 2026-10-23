@@ -29,63 +29,56 @@ p {
     color: var(--secondary-text) !important;
 }
 
-.neutral-plate {
-    padding: 0 8px;
-
-    border-radius: var(--plate-border-radius);
-
-    color: var(--secondary-text);
-    background-color: var(--secondary-text-back);
-}
-
 .info {
     color: var(--info) !important;
 }
 
-.info-plate {
-    padding: 0 8px;
-
-    border-radius: var(--plate-border-radius);
-
-    color: var(--info);
-    background-color: var(--info-back);
+.plate.neutral {
+    color: var(--secondary-text);
+    background-color: var(--secondary-text-back);
 }
 
 .success {
     color: var(--success) !important;
 }
 
-.success-plate {
-    padding: 0 8px;
-
-    border-radius: var(--plate-border-radius);
-
-    color: var(--success);
-    background-color: var(--success-back);
-}
-
 .pending {
     color: var(--pending) !important;
-}
-
-.pending-plate {
-    padding: 0 8px;
-
-    border-radius: var(--plate-border-radius);
-
-    color: var(--pending);
-    background-color: var(--pending-back);
 }
 
 .error {
     color: var(--error) !important;
 }
 
-.error-plate {
+/* Plates */
+
+.plate {
     padding: 0 8px;
 
     border-radius: var(--plate-border-radius);
 
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.plate.info {
+    color: var(--info);
+    background-color: var(--info-back);
+}
+
+.plate.success {
+    color: var(--success);
+    background-color: var(--success-back);
+}
+
+.plate.pending {
+    color: var(--pending);
+    background-color: var(--pending-back);
+}
+
+.plate.error {
     color: var(--error);
     background-color: var(--error-back);
 }
@@ -100,7 +93,7 @@ p {
 
 /* Input */
 
-.string-input {
+.form__input {
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -120,7 +113,7 @@ input {
 
 input:focus {
     outline: none;
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.5);
 }
 
 /* Primary button */
@@ -133,33 +126,89 @@ input:focus {
     border-radius: var(--plate-border-radius);
 
     cursor: pointer;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .primary-button.default {
-    color: var(--primaty-button-text);
+    color: var(--primary-button-text);
     background-color: var(--primary-button-background);
 }
+
+.primary-button.default:active {
+    background-color: var(--primary-button-background-active);
+}
+
+/* Primary button - Neutral */
 
 .primary-button.neutral {
     color: var(--neutral-button-text);
     background-color: var(--neutral-button-background);
 }
 
+.primary-button.neutral:hover {
+    background-color: var(--neutral-button-background-hover);
+}
+
+.primary-button.neutral:active {
+    background-color: var(--neutral-button-background-active);
+}
+
+/* Primary button - Green */
+
 .primary-button.green {
     color: var(--green-button-text);
     background-color: var(--green-button-background);
 }
+
+.primary-button.green:hover {
+    background-color: var(--green-button-background-hover);
+}
+
+.primary-button.green:active {
+    background-color: var(--green-button-background-active);
+}
+
+/* Primary button - Yellow */
+
+.primary-button.yellow {
+    color: var(--yellow-button-text);
+    background-color: var(--yellow-button-background);
+}
+
+.primary-button.yellow:hover {
+    background-color: var(--yellow-button-background-hover);
+}
+
+.primary-button.yellow:active {
+    background-color: var(--yellow-button-background-active);
+}
+
+/* Primary button - Red */
 
 .primary-button.red {
     color: var(--red-button-text);
     background-color: var(--red-button-background);
 }
 
+.primary-button.red:hover {
+    background-color: var(--red-button-background-hover);
+}
+
+.primary-button.red:active {
+    background-color: var(--red-button-background-active);
+}
+
+/* Primary button - Disabled */
+
 .primary-button:disabled {
     color: rgba(255, 255, 255, 0.4);
     background-color: rgba(255, 255, 255, 0.15);
-
     cursor: default;
+    pointer-events: none;
 }
 
 /* Tab Button */
@@ -176,20 +225,17 @@ input:focus {
     background-color: transparent;
 
     cursor: pointer;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .tab-button.active {
-    height: 30px;
-
-    padding: 0 15px;
-
-    border: none;
-    border-radius: var(--plate-border-radius);
-
+    border-color: transparent;
     color: var(--black);
     background-color: var(--white);
-
-    cursor: pointer;
 }
 
 /* Chart */
@@ -272,6 +318,12 @@ input:focus {
 
 /* Log Container */
 
+.logs {
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
 .log-container {
     height: 400px;
 
@@ -283,7 +335,20 @@ input:focus {
     overflow: auto;
 }
 
-.log-text {
+.log-container__no-logs {
+    display: block;
+    position: absolute;
+
+    align-self: center;
+    margin-top: 180px;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.log-row {
     display: grid;
     grid-template-columns: 65px 18px 55px minmax(0, 1fr);
     align-items: baseline;

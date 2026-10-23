@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="styles/style.css">
     <link rel="stylesheet" href="styles/ui.css">
     <link rel="stylesheet" href="styles/tabs.css">
+    <link rel="stylesheet" href="styles/forms.css">
 
     <script src="scripts/tabs.js" defer></script>
     <script type="module" src="scripts/fetch.js" defer></script>
@@ -19,7 +20,7 @@
         <div class="header">
             <div class="bar__status-row">
                 <p id="device-name" class="value-bold">Untitled device</p>
-                <p id="connection-status" class="success-plate">Online</p>
+                <p id="connection-status" class="plate success">Online</p>
             </div>
 
             <div class="bar__status-row">
@@ -29,14 +30,14 @@
         </div>
 
         <div class="tab-wrapper">
-            <div class="tabs-header" id="tabsHeader">
-                <button class="tab-button active" data-tab="tab-1">System</button>
-                <button class="tab-button" data-tab="tab-2">Output log</button>
-                <button class="tab-button" data-tab="tab-3">OTA & Network</button>
-                <button class="tab-button" data-tab="tab-4">MQTT</button>
+            <div class="tab-switch" id="tabsHeader">
+                <button class="tab-button active" data-tab="system">System</button>
+                <button class="tab-button" data-tab="output-log">Output log</button>
+                <button class="tab-button" data-tab="ota-network">OTA & Network</button>
+                <button class="tab-button" data-tab="mqtt">MQTT</button>
             </div>
 
-            <div class="tab-pane active" id="tab-1">
+            <div class="tab-pane active" id="system">
                 <div class="tab">
                     <div class="tab-plate">
                         <p class="plate-title">Summary</p>
@@ -57,7 +58,7 @@
                             <div class="metadata-grid__element">
                                 <p class="subtitle-small">Chip Temp.</p>
                                 <p id="chip-temperature" class="value-bold">-</p>
-                                <p id="temperature-status" class="subtitle-small neutral">No data</p>
+                                <p id="chip-temperature-status" class="subtitle-small neutral">No data</p>
                             </div>
                         </div>
                     </div>
@@ -118,8 +119,8 @@
                         <div class="bar">
                             <div class="bar__status">
                                 <div class="bar__status-row">
-                                    <p id="ota0-label" class="subtitle">ota_0</p>
-                                    <p id="ota0-state" class="neutral-plate">UNKNOWN</p>
+                                    <p id="ota0-label" class="subtitle">#1</p>
+                                    <p id="ota0-state" class="plate"></p>
                                 </div>
 
                                 <div class="bar__status-row">
@@ -138,8 +139,8 @@
                         <div class="bar">
                             <div class="bar__status">
                                 <div class="bar__status-row">
-                                    <p id="ota1-label" class="subtitle">ota_1</p>
-                                    <p id="ota1-state" class="neutral-plate">UNKNOWN</p>
+                                    <p id="ota1-label" class="subtitle">#2</p>
+                                    <p id="ota1-state" class="plate"></p>
                                 </div>
 
                                 <div class="bar__status-row">
@@ -245,83 +246,105 @@
                             </div>
                         </div>
 
-                        <button class="primary-button">Restart device</button>
+                        <button class="primary-button default">Restart device</button>
                     </div>
                 </div>
             </div>
 
-            <div class="tab-pane" id="tab-2">
+            <div class="tab-pane" id="output-log">
                 <div class="tab">
                     <div class="tab-plate">
                         <div class="bar__status-row">
                             <p class="plate-title">Output log</p>
-                            <p id="logs-status" class="neutral-plate">No data</p>
+                            <p id="logs-status"></p>
                         </div>
 
-                        <div id="logs" class="log-container"></div>
+                        <div class="logs">
+                            <p id="no-logs-label" class="subtitle log-container__no-logs">No available logs</p>
+                            <div id="logs" class="log-container"></div>
+                        </div>
 
                         <div class="buttons-bundle">
                             <button id="pause-logs" class="primary-button neutral">Pause</button>
-                            <button id="download-logs" class="primary-button green">Download</button>
+                            <button id="download-logs" class="primary-button neutral">Download</button>
                             <button id="clear-logs" class="primary-button red">Clear</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="tab-pane" id="tab-3">
+            <div class="tab-pane" id="ota-network">
                 <div class="tab">
                     <div class="tab-plate">
                         <p class="plate-title">OTA</p>
 
-                        <div class="string-input">
-                            <p class="subtitle">Firmware URL (S3, local storage, etc.)</p>
-                            <input placeholder="https://example.s3.eu-central-1.amazonaws.com/firmware.bin?X-...">
-                        </div>
+                        <div class="form">
+                            <div class="form__fields">
+                                <div class="form__input">
+                                    <p class="subtitle">Firmware URL (S3, local storage, etc.)</p>
+                                    <input placeholder="https://example.s3.eu-central-1.amazonaws.com/firmware.bin?X-...">
+                                </div>
+                            </div>
 
-                        <button disabled class="primary-button default">Check firmware</button>
+                            <div class="form__buttons">
+                                <button disabled class="primary-button default">Check firmware</button>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="tab-plate">
                         <p class="plate-title">Network</p>
 
-                        <div class="string-input">
-                            <p class="subtitle">Wi-Fi SSID</p>
-                            <input class="string-input" placeholder="MikroTik hAP">
-                        </div>
+                        <div class="form">
+                            <div class="form__fields">
+                                <div class="form__input">
+                                    <p class="subtitle">Wi-Fi SSID</p>
+                                    <input class="form__input" placeholder="MikroTik hAP">
+                                </div>
 
-                        <div class="string-input">
-                            <p class="subtitle">Password</p>
-                            <input type="password" placeholder="••••••••••••••••">
-                        </div>
+                                <div class="form__input">
+                                    <p class="subtitle">Password</p>
+                                    <input type="password" placeholder="••••••••••••••••">
+                                </div>
+                            </div>
 
-                        <button disabled class="primary-button default">Update Wi-Fi configuration</button>
-                        <button class="primary-button neutral">Show current configuration</button>
+                            <div class="form__buttons">
+                                <button disabled class="primary-button default">Update Wi-Fi configuration</button>
+                                <button class="primary-button neutral">Show current configuration</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="tab-pane" id="tab-4">
+            <div class="tab-pane" id="mqtt">
                 <div class="tab">
                     <div class="tab-plate">
                         <p class="plate-title">MQTT credentials</p>
 
-                        <div class="string-input">
-                            <p class="subtitle">Broker URI</p>
-                            <input class="string-input" placeholder="mqtt://192.168.0.197:1883">
-                        </div>
+                        <div class="form">
+                            <div class="form__fields">
+                                <div class="form__input">
+                                    <p class="subtitle">Broker URI</p>
+                                    <input placeholder="mqtt://192.168.0.197:1883">
+                                </div>
 
-                        <div class="string-input">
-                            <p class="subtitle">Username</p>
-                            <input class="string-input" placeholder="esp32">
-                        </div>
+                                <div class="form__input">
+                                    <p class="subtitle">Username</p>
+                                    <input placeholder="esp32">
+                                </div>
 
-                        <div class="string-input">
-                            <p class="subtitle">Password</p>
-                            <input type="password" placeholder="••••••••••••••••">
-                        </div>
+                                <div class="form__input">
+                                    <p class="subtitle">Password</p>
+                                    <input type="password" placeholder="••••••••••••••••">
+                                </div>
+                            </div>
 
-                        <button disabled class="primary-button default">Update MQTT configuration</button>
+                            <div class="form__buttons">
+                                <button disabled class="primary-button default">Update MQTT configuration</button>
+                                <button class="primary-button neutral">Show current configuration</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

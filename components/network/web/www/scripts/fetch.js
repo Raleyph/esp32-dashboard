@@ -36,12 +36,21 @@ function connectWebSocket() {
         return bytes / 1024;
     }
 
+    if (socket) {
+        socket.onclose = null;
+        socket.close();
+    }
+
     const protocol = location.protocol === "https:" ? "wss:" : "ws:";
 
     socket = new WebSocket(`${protocol}//${location.host}/ws`);
 
     socket.onopen = () => {
+        console.log("Successfully connected to ESP32.");
+
         update.setConnectionStatus(true);
+
+        clearTimeout(reconnectTimer);
     };
 
     socket.onmessage = (event) => {
@@ -73,6 +82,8 @@ function connectWebSocket() {
     };
 
     socket.onclose = () => {
+        console.error("Connection has been lost. Try to reconnect in 2 seconds...")
+
         update.setConnectionStatus(false);
 
         clearTimeout(reconnectTimer);
@@ -80,7 +91,9 @@ function connectWebSocket() {
         reconnectTimer = setTimeout(connectWebSocket, 2000);
     };
 
-    socket.onerror = () => {
+    socket.onerror = (error) => {
+        console.error("WebSocket error:", error)
+
         update.setConnectionStatus(false);
 
         socket.close();

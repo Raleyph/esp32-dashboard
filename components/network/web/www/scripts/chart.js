@@ -32,7 +32,7 @@ export class MemoryChart {
 
         this.padding = {
             top: 20,
-            right: 30,
+            right: 10,
             bottom: 50,
             left: 50
         };

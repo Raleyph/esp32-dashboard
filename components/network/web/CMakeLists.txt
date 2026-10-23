@@ -11,6 +11,7 @@ idf_component_register(
         "www/styles/style.css"
         "www/styles/ui.css"
         "www/styles/tabs.css"
+        "www/styles/forms.css"
 
         "www/scripts/tabs.js"
         "www/scripts/fetch.js"

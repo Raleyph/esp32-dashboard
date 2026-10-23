@@ -1,3 +1,5 @@
+// Copyright (c) 2026 Raleyph. All rights reserved.
+
 export function getPlateType(value) {
     const success = "success";
     const info = "info";
@@ -27,7 +29,7 @@ export function getPlateType(value) {
     return neutral;
 }
 
-export function setText(id, value, setPlate = false) {
+export function setTextValue(id, value, setPlate = false) {
     if (value == null || value === "") return;
 
     let text = value;
@@ -44,6 +46,6 @@ export function setText(id, value, setPlate = false) {
     element.textContent = text;
 
     if (setPlate) {
-        element.className = `${getPlateType(value)}-plate`;
+        element.className = `plate ${getPlateType(value)}`;
     }
 }

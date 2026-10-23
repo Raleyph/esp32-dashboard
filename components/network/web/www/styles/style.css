@@ -28,17 +28,28 @@
     --bar-tertiary-color: #D97706;
 
     --primary-button-background: #FFF;
-    --primaty-button-text: #000;
+    --primary-button-background-active: #e3e3e8;
+    --primary-button-text: #000;
 
     --neutral-button-background: #24272D;
+    --neutral-button-background-hover: #2E3138;
+    --neutral-button-background-active: #393D45;
     --neutral-button-text: #E4E6EB;
 
     --green-button-background: rgb(16 185 129 / 0.15);
+    --green-button-background-hover: rgb(16 185 129 / 0.2);
+    --green-button-background-active: rgb(16 185 129 / 0.28);
     --green-button-text: #10B981;
 
-    --red-button-background: rgb(239 68 68 / 0.15);
-    --red-button-text: #EF4444;
+    --yellow-button-background: rgb(245 158 11 / 0.15);
+    --yellow-button-background-hover: rgb(245 158 11 / 0.2);
+    --yellow-button-background-active: rgb(245 158 11 / 0.28);
+    --yellow-button-text: #F59E0B;
 
+    --red-button-background: rgb(239 68 68 / 0.15);
+    --red-button-background-hover: rgb(239 68 68 / 0.2);
+    --red-button-background-active: rgb(239 68 68 / 0.28);
+    --red-button-text: #EF4444;
 
     --plate-border-radius: 25px;
 }

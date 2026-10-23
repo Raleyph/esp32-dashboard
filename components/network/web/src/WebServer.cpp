@@ -33,6 +33,9 @@ extern "C" {
     extern const uint8_t css_tabs_start[] asm("_binary_tabs_css_start");
     extern const uint8_t css_tabs_end[] asm("_binary_tabs_css_end");
 
+    extern const uint8_t css_forms_start[] asm("_binary_forms_css_start");
+    extern const uint8_t css_forms_end[] asm("_binary_forms_css_end");
+
     // JS
     extern const uint8_t js_tabs_start[] asm("_binary_tabs_js_start");
     extern const uint8_t js_tabs_end[] asm("_binary_tabs_js_end");
@@ -63,6 +66,7 @@ static const StaticFile files[] = {
     {"/styles/style.css", "text/css", css_style_start, css_style_end},
     {"/styles/ui.css", "text/css", css_ui_start, css_ui_end},
     {"/styles/tabs.css", "text/css", css_tabs_start, css_tabs_end},
+    {"/styles/forms.css", "text/css", css_forms_start, css_forms_end},
 
     {"/scripts/tabs.js", "application/javascript", js_tabs_start, js_tabs_end},
     {"/scripts/fetch.js", "application/javascript", js_fetch_start, js_fetch_end},

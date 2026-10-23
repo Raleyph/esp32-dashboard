@@ -13,6 +13,7 @@ export class LogManager {
 
         this.container = document.getElementById("logs");
         this.statusIndicator = document.getElementById("logs-status");
+        this.noLogsLabel = document.getElementById("no-logs-label");
 
         this.pauseButton = document.getElementById("pause-logs");
         this.downladButton = document.getElementById("download-logs");
@@ -65,15 +66,27 @@ export class LogManager {
     setIndicatorValue() {
         const indicatorClass = this.isPaused ? "pending" : "success";
         const indicatorText = this.isPaused ? "Paused" : "Live";
-        this.statusIndicator.className = `${indicatorClass}-plate`;
+
+        this.statusIndicator.className = `plate ${indicatorClass}`;
         this.statusIndicator.textContent = indicatorText;
+    }
+
+    toggleNoLogsLabel(enabled) {
+        this.noLogsLabel.style = enabled ? "display: block" : "display: none";
     }
 
     togglePauseButton() {
         this.pauseButton.textContent = this.isPaused ? "Resume" : "Pause";
+
+        const stylesReplacement = this.isPaused ? ["neutral", "green"] : ["green", "neutral"];
+        this.pauseButton.classList.replace(...stylesReplacement);
     }
 
     addRow(...row) {
+        if (this.stringBuffer.length === 0 && !this.isPaused) {
+            this.toggleNoLogsLabel(false);
+        }
+
         if (this.isPaused) {
             this.pauseBuffer.push(row);
 
@@ -90,7 +103,7 @@ export class LogManager {
         }
 
         const logRow = document.createElement("p");
-        logRow.classList.add("log-text", `${this.resolveLogLevelColor(row[1])}`);
+        logRow.classList.add("log-row", `${this.resolveLogLevelColor(row[1])}`);
 
         row.forEach((value, index) => {
             const logElement = document.createElement("span");
@@ -155,5 +168,6 @@ export class LogManager {
     clear() {
         this.stringBuffer.length = 0;
         this.container.innerHTML = "";
+        this.toggleNoLogsLabel(true);
     }
 }

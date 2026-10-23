@@ -1,3 +1,5 @@
+// Copyright (c) 2026 Raleyph. All rights reserved.
+
 export function formatSecondsToDDHHMMSS(totalSeconds) {
     const hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
     const minutes = Math.floor((totalSeconds % 3600) / 60);

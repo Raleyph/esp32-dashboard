@@ -1,26 +1,60 @@
 // Copyright (c) 2026 Raleyph. All rights reserved.
 
-document.addEventListener('DOMContentLoaded', () => {
-    const tabsHeader = document.getElementById('tabsHeader');
+document.addEventListener("DOMContentLoaded", () => {
+    const tabsHeader = document.getElementById("tabsHeader");
 
-    tabsHeader.addEventListener('click', (e) => {
-        const clickedBtn = e.target.closest('.tab-button');
+    if (!tabsHeader) {
+        return;
+    }
 
-        if (!clickedBtn || clickedBtn.classList.contains('active'))
+    const buttons = tabsHeader.querySelectorAll(".tab-button");
+    const panes = document.querySelectorAll(".tab-pane");
+
+    function activateTab(targetTabId, updateHash = true) {
+        const targetBtn = tabsHeader.querySelector(`[data-tab="${targetTabId}"]`);
+        const targetPane = document.getElementById(targetTabId);
+
+        if (!targetBtn || !targetPane) {
+            return;
+        }
+
+        buttons.forEach(btn => btn.classList.remove("active"));
+        targetBtn.classList.add("active");
+
+        panes.forEach(pane => pane.classList.remove("active"));
+        targetPane.classList.add("active");
+
+        if (updateHash) {
+            history.pushState(null, null, `#${targetTabId}`)
+        }
+    }
+
+    tabsHeader.addEventListener("click", (e) => {
+        const clickedBtn = e.target.closest(".tab-button");
+
+        if (!clickedBtn || clickedBtn.classList.contains("active"))
             return;
 
-        const targetTabId = clickedBtn.dataset.tab;
+        activateTab(clickedBtn.dataset.tab);
+    });
 
-        tabsHeader.querySelectorAll('.tab-button').forEach(
-            btn => btn.classList.remove('active')
-        );
+    const initialHash = window.location.hash.slice(1);
 
-        clickedBtn.classList.add('active');
+    if (initialHash) {
+        activateTab(initialHash, false);
+    } else {
+        const defaultActive = tabsHeader.querySelector(".tab-button.active");
 
-        document.querySelectorAll('.tab-pane').forEach(
-            tab => tab.classList.remove('active')
-        );
+        if (defaultActive) {
+            activateTab(defaultActive.dataset.tab, false);
+        }
+    }
 
-        document.getElementById(targetTabId)?.classList.add('active');
+    window.addEventListener("popstate", () => {
+        const hash = window.location.hash.slice(1);
+
+        if (hash) {
+            activateTab(hash, false);
+        }
     });
 });
