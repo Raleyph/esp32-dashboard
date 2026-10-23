@@ -113,8 +113,8 @@ char * serialize_dynamic_metrics(const SystemMetrics& metrics) {
 
     // Summary
     add_number(data, "uptime", metrics.uptime_seconds);
-    add_number(data, "wifiRssi", *metrics.wifi_rssi);
-    add_number(data, "chipTemperature", *metrics.chip_temperature_celsius);
+    add_number(data, "wifiRssi", metrics.wifi_rssi);
+    add_number(data, "chipTemperature", metrics.chip_temperature_celsius);
 
     // Heap Usage
     add_number(data, "totalHeap", metrics.total_heap);
